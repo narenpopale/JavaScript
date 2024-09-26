@@ -1,8 +1,8 @@
 // var const let
 
-var name = "naren"; // var value changes
-const naam = "naren"; // const value dosen't changes
-let naav = "naren"
+var name = "naren"; // var can be redeclare, reinitialize (Global Scope)
+let naav = "naren"; // let can't be redeclare and can be reinitialize (Block Scope)
+const naam = "naren"; // const neither redeclare nor reinitialize (Block Scope)
 
 
 // hoisting - variables and functions are hoisted which means there declarations is moved on the top of the code
@@ -25,7 +25,8 @@ var z;
 // 1 Primitive Data types --> it passed by value
 // 2 Reference Data types --> () [] {} - it passed by reference
 
-// Primitive Data type
+// Primitive Data types (7 types)
+// Number, String, Boolean, Undefined, null, BigInt, Symbol
 var age = 12;
 var myage = age;
 age = 1;
@@ -46,31 +47,78 @@ for (let i = 0; i < 5; i++) {
 }
 
 
+// Operators
+// (==) - checks equality ignore data type
+// (===) - checks equality with data type
+// (!==) - checks equality with data type
+
+
 // functions
 function func() {
     console.log("Hello World");
 }
 
+// Arrow functions
+const arrowFunc = () => {
+    console.log("Hello World");    
+}
 
-// arrays
+
+
+// AARAYS
 var array = [1, 2, 3, 4];
 
 array.push(5); // means push_back
 array.pop(); // means pop_back
 array.unshift(0); // means push_front
 array.shift(); // means pop_front
-array.splice(1, 2); // means earse 2 elements from 1st index
+array.slice(1, 3); // It returns part of array
+array.splice(1, 2); // means erase 2 elements from 1st index
+array.toString(); // It returns new String
 
 
-// Objects - Key Value pairs
+// MAP METHOD IN ARRAY
+// map is similar to the foreach but it is used to create new array
+let newArr = array.map((val, index, array) => {
+    return val;
+})
+
+// FILTER METHOD IN ARRAY
+// filter is used to filter some elements from array based on condition and it creates new array
+let evenArr = array.filter((val, index, array) => {
+    return val % 2 === 0;
+})
+
+// REDUCE METHOD IN ARRAY
+// reduce performs some operations and reduces the array to a single value. It returns that single value.
+let output = array.reduce((prev, curr) => {
+    return prev + curr;
+})
+
+
+
+// Strings
+let newStr = "newString";
+let temp = `This is a Template Literal`;
+newStr.length;
+newStr.toUpperCase(); // It returns new String
+newStr.toLowerCase(); 
+newStr.trim(); // Removes spaces from front and back
+newStr.slice(0, 3); // It returns part of string
+newStr.concat("string"); // It returns new string
+newStr.replace("s", "r"); // It returns new string
+newStr.charAt(2); 
+
+
+// Objects - Collections of different data types
 
 // 1) blank obj
-var obj1 = {
+const obj1 = {
     // kay: value
 }
 
 // 2) filled obj
-var obj2 = {
+const obj2 = {
     // kay: value
 
     // properties = name, age, profession
@@ -88,6 +136,7 @@ obj2.age = 22; // updating the value
 
 // accesing value
 console.log(obj2.name);
+console.log(obj2["name"]);
 
 // Deleting Key: value pair
 delete obj2.age;
@@ -192,7 +241,7 @@ else {
 
 var nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 
-nums.forEach(function (val) {
+nums.forEach(function (val, index, array) {
     console.log(val);
 });
 
@@ -206,13 +255,23 @@ var oj = {
     rollNo: 123
 }
 
-for (var key in oj) {
+for (let key in oj) {
     console.log(key); // prints only key's of object
     console.log(oj[key]); // prints key's values of object
 }
 
 
-// 3. do while
+// 3. forof
+// it works only on strings and arrays
+
+let str = "newstring";
+
+for (let val of str) {
+    console.log(val);
+}
+
+
+// 4. do while
 
 var i = 0;
 
@@ -230,6 +289,9 @@ setTimeout(function () {
     console.log("Hello World");
 }, 5000);
 
+
+// HIGHER ORDER FUNCTIONS
+// functions which takes functions as an argument or functions which returns a another function
 
 
 // FIRST CLASS FUNCTIONS
