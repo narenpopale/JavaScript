@@ -9,19 +9,44 @@ console.log(a);
 
 // 2. Changing HTML
 a.innerHTML = "Hello World";
+a.innerText = "New Text";
+a.textContent = "New Text";
 
 
 // 3. Changing CSS
 a.style.color = "red";
 a.style.backgroundColor = "black";
+a.style.fontSize = "12px";
 
 
 // 4. Event Listener
-a.addEventListener("click", function(){
+a.addEventListener("click", (event) => {
     a.innerHTML = "Changed"
     a.style.color = "yellow";
+    console.log("Event Type: ", event.type);
 });
 
+a.onclick = (event) => {
+    console.log("Clicked");
+    console.log("Event Type: ", event.type);
+}
+
+
+// Attributes
+let id = a.getAttribute("id");
+let cls = a.getAttribute("class");
+
+a.setAttribute("class", "newClass");
+a.setAttribute("id", "newId");
+
+
+// Create New Element
+let button = document.createElement("button");
+let div = document.createElement("div");
+
+
+// Delete Existing Element
+a.remove();
 
 
 // Bulb example of DOM
