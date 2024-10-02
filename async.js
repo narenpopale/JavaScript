@@ -1,139 +1,181 @@
-// Sync - It means all tasks performs in order one by one, after completing first task then next task will get start
+// ASYNC Program - It dosen't stop the code flow while delay in some instructions
+console.log("1");
+console.log("2");
 
-// Async - It means all tasks starts at same time and gets complete by thier respective ending time
+setTimeout(() => {
+    console.log("Hello");
+}, 5000);
 
-// Async code - 
-// setInterval
-// setTimeout
-// promises
-// fetch
-// axios
-// XMLHttpRequest
+console.log("3");
+console.log("4");
 
-// other than above are all sync code
-
-
-// JS is not asynchronous, why?
-// --> async means start all task together, but JS is single threaded hence it performs one task at a time
-
-
-// Event Loop 
-// there is 2 execution stacks in JS 
-// main stack and side stack
-// main stack deals with sync code and side stack deals with async code
-// when all tasks performed in the main stack and it gets empty then it goes to the side stack and asks is your output is ready? if ready then it will bring this task to the main stack and then completes it, this process is nothing but a event loop
-
-console.log("h1");
-console.log("h2");
-setTimeout(function () {
-    console.log("h3");
-}, 0);
-console.log("h4");
-
-// Output - 
-// h1
-// h2
-// h4
-// h3
+// Output
+// 1
+// 2
+// 3
+// 4
+// Hello (after 5 sec)
 
 
-// Single threading and multi threading
-// Single - performs one task at a time
-// Multi - performs multiple tasks at a time
+
+// CALLBACKS - it is a function passed as an argument to another function
+const sum = (a, b) => {
+    console.log(a + b);
+}
+
+const calculator = (a, b, callbackFunc) => {
+    callbackFunc(a, b);
+}
+
+calculator(2, 3, sum); // sum is callback function
 
 
-// callbacks => functions
-// it runs when async code gets completed
 
-// Async code - 
-// setInterval
-// setTimeout
-// promises
-// fetch
-// axios
-// XMLHttpRequest
+// CALLBACK HELL - This is a Nested callbacks 
+// This style of program is difficult to understand and manage
+const getData = (dataID, getNextData) => {
 
-// callbacks
-// then catch
-// async await
+    setTimeout(() => {
+        console.log("Data : ", dataID);
+        if(getNextData) {
+            getNextData();
+        }
+    }, 2000);
 
+}
 
-// Promises
-// - it has 3 states resolve, reject and pending. when code written in the promise gets resolve then you can use (.then) and when code gets reject then you can use (.catch)
-
-var promise = new Promise(function (res, rej) {
-    var n = Math.floor(Math.random() * 10);
-
-    if (n < 5) {
-        return res();
-    }
-    else {
-        return rej();
-    }
+// Below code is callback hell
+console.log("getting data 1...");
+getData(1, () => {
+    console.log("getting data 2...");
+    getData(2, () => {
+        console.log("getting data 3...");
+        getData(3, () => {
+            console.log("getting data 4...");
+            getData(4);
+        });
+    });
 });
 
 
-promise
-    // when promise state is resolve this function will execute
-    .then(function () {
-        console.log("resolved!");
+
+// PROMISES - It is for eventual completion of task
+// It is an object
+// It is a soln for callback hell
+
+// Promise states
+// Pending - result is undefined
+// Resolved - result is value - resolve(result)
+// Rejected - result is an error - reject(error)
+
+const getPromise = () => {
+    return new Promise((resolve, reject) => {
+        console.log("I am Promise");
+        // resolve("success");
+        // reject("network error");
     })
-    // when promise state is reject this function will execute
-    .catch(function () {
-        console.log("rejected!");
-    })
-
-
-// Promises chaining
-// Ex - write below lines asynchronously but in order
-// This
-// is
-// my
-// car
-
-var p1 = new Promise(function (res, rej) {
-    return res("This");
-})
-
-
-var p2 = p1.then(function (data) {
-    console.log(data);
-    return new Promise(function (res, rej) {
-        return res("is");
-    })
-})
-
-
-var p3 = p2.then(function (data) {
-    console.log(data);
-    return new Promise(function (res, rej) {
-        return res("my");
-    })
-})
-
-
-var p4 = p3.then(function (data) {
-    console.log(data);
-    return new Promise(function (res, rej) {
-        return res("car");
-    })
-})
-
-
-p4.then(function (data) {
-    console.log(data);
-})
-
-
-// async await
-// instead of promises you can use this
-// apply async to the nearest async code function
-// apply await to the async code 
-
-async function abcd() {
-    var raw = await fetch('https://api.publicapis.org/entries');
-    var data = await raw.json();
-    console.log(data);
 }
 
-abcd();
+let promise = getPromise();
+
+// When promise gets resolved, then executes
+promise.then((res) => {
+    console.log("Promise fulfilled", res);
+})
+
+// When promise gets rejected, catch executes
+promise.catch((err) => {
+    console.log("Promise rejected", err);
+})
+
+
+
+// PROMISE CHAIN
+let getdata = (dataID) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            console.log("Data : ", dataID);
+            resolve("success");
+        }, 2000);
+    })
+}
+
+
+// Below code is promise chain
+console.log("getting data1...");
+let p1 = getdata(1);
+p1.then((res) => {
+    console.log("getting data2...");
+    let p2 = getdata(2);
+    p2.then((res) => {
+        console.log("getting data3...");
+        let p3 = getdata(3);
+        p3.then((res) => {
+            console.log(res);            
+        })
+    })
+})
+
+
+// Below code is better version of promise chain
+console.log("getting data1...");
+getdata(1).then((res) => {
+    console.log("getting data2...");
+    return getdata(2);
+}).then((res) => {
+    console.log("getting data3...");
+    return getdata(3);
+}).then((res) => {
+    console.log(res);
+})
+
+
+
+// ASYNC - AWAIT
+// Async function always returns a promise
+// Await pauses the execution of its surrounding async function until the promise is settled
+let getApiData = (dataID) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            console.log("Data : ", dataID);
+            resolve("success");
+        }, 2000);
+    })
+}
+
+let getAllData = async () => {
+    console.log("getting data1...");
+    await getApiData(1);
+    console.log("getting data2...");
+    await getApiData(2);
+    console.log("getting data3...");
+    await getApiData(3);
+}
+
+getAllData();
+
+
+
+// IIFE - Immediately Invoked Function Expression
+// IIFE is a function that is called immediately as soon as it is defined
+
+// 1st way
+(function(){
+    // code
+    // code
+    // code
+})();
+
+// 2nd way
+(() => {
+    // code
+    // code
+    // code
+})();
+
+// 3rd way
+(async () => {
+    // code
+    // code
+    // code
+})();
